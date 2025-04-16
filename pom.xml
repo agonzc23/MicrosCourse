@@ -16,6 +16,7 @@
 	
 	<modules>
 		<module>msvc-usuarios</module>
+		<module>msvc-cursos</module>
 	</modules>
 	<name>curso-microservicios</name>
 	<!-- FIXME change it to the project's website -->
