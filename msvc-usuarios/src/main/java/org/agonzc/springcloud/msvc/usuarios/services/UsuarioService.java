@@ -15,4 +15,5 @@ public interface UsuarioService {
 
 	void delete(Long id);
 
+	boolean existByEmail(String email);
 }
