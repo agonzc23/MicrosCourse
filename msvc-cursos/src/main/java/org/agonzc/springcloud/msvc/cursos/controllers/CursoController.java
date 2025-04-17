@@ -1,9 +1,11 @@
 package org.agonzc.springcloud.msvc.cursos.controllers;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.agonzc.springcloud.msvc.cursos.models.Usuario;
 import org.agonzc.springcloud.msvc.cursos.models.entities.Curso;
 import org.agonzc.springcloud.msvc.cursos.services.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import feign.FeignException;
 import jakarta.validation.Valid;
 
 @RestController
@@ -42,19 +45,19 @@ public class CursoController {
 
 	@PostMapping
 	public ResponseEntity<?> create(@Valid @RequestBody Curso curso, BindingResult result) {
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			return validateErrors(result);
 		}
-		
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(cursoService.save(curso));
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Curso curso, BindingResult result) {
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			return validateErrors(result);
 		}
-		
+
 		Optional<Curso> opCurso = cursoService.findById(id);
 		if (opCurso.isPresent()) {
 			Curso dbCurso = opCurso.get();
@@ -75,7 +78,44 @@ public class CursoController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
+	@PutMapping("{cursoId}/user/{userId}")
+	public ResponseEntity<?> assignUser(@PathVariable Long cursoId, @PathVariable Long userId) {
+		Optional<Usuario> opUser = null;
+
+		try {
+			opUser = cursoService.assignUser(userId, cursoId);
+		} catch (FeignException e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+					.body(Collections.singletonMap("msg", e.getMessage()));
+		}
+
+		if (opUser.isPresent()) {
+			return ResponseEntity.ok(opUser.get());
+		}
+
+		return ResponseEntity.notFound().build();
+
+	}
+
+	@DeleteMapping("{cursoId}/user/{userId}")
+	public ResponseEntity<?> unassignUser(@PathVariable Long cursoId, @PathVariable Long userId) {
+		Optional<Usuario> opUser = null;
+
+		try {
+			opUser = cursoService.unassignUser(userId, cursoId);
+		} catch (FeignException e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+					.body(Collections.singletonMap("msg", e.getMessage()));
+		}
+
+		if (opUser.isPresent()) {
+			return ResponseEntity.ok(opUser.get());
+		}
+
+		return ResponseEntity.notFound().build();
+	}
+
 	private ResponseEntity<?> validateErrors(BindingResult result) {
 		Map<String, String> errores = new HashMap<>();
 		result.getFieldErrors().forEach(err -> {
