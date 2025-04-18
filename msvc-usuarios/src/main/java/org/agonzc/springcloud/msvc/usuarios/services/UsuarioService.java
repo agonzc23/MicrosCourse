@@ -9,6 +9,8 @@ public interface UsuarioService {
 
 	List<Usuario> findAll();
 
+	List<Usuario> findAllByIds(Iterable<Long> ids);
+	
 	Optional<Usuario> findById(Long id);
 
 	Usuario save(Usuario user);

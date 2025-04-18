@@ -28,7 +28,19 @@ public class CursoServiceImpl implements CursoService{
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<Curso> findById(Long id) {
-		return cursoRepo.findById(id);
+		Optional<Curso> opCurso =  cursoRepo.findById(id);
+		if (opCurso.isPresent()) {
+			Curso curso = opCurso.get();
+			List<Long> userIds = curso.getCursoUsuarios().stream().map(CursoUsuario::getUsuarioId).toList();
+			
+			usersClient.getAllById(userIds).forEach(user -> {
+				curso.addUsuario(user);
+			});
+			
+			return Optional.of(curso);
+		}
+		
+		return Optional.empty();
 	}
 
 	@Override

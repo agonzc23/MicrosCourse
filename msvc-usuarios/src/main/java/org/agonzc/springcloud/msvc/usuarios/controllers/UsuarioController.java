@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -42,6 +43,11 @@ public class UsuarioController {
 			return ResponseEntity.notFound().build();
 	}
 
+	@GetMapping("/usuarios")
+	public ResponseEntity<?> getAllByIds(@RequestParam List<Long> ids){
+		return ResponseEntity.ok(service.findAllByIds(ids));
+	}
+	
 	@PostMapping
 	public ResponseEntity<?> create(@Valid @RequestBody Usuario user, BindingResult result) {
 		if (result.hasErrors()) {

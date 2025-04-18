@@ -6,6 +6,7 @@ import org.agonzc.springcloud.msvc.cursos.models.Usuario;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "msvc-usuarios", url = "localhost:8081")
 public interface UsuarioClientRest {
@@ -15,4 +16,7 @@ public interface UsuarioClientRest {
 	
 	@GetMapping
 	List<Usuario> getAll();
+
+	@GetMapping("/usuarios")
+	List<Usuario> getAllById(@RequestParam List<Long> ids);
 }

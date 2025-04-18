@@ -44,4 +44,9 @@ public class UsuarioServiceImpl implements UsuarioService{
 		return usuarioRepository.findByEmail(email).isPresent();
 	}
 
+	@Override
+	public List<Usuario> findAllByIds(Iterable<Long> ids) {
+		return usuarioRepository.findAllById(ids);
+	}
+
 }
