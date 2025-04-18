@@ -115,6 +115,12 @@ public class CursoController {
 
 		return ResponseEntity.notFound().build();
 	}
+	
+	@DeleteMapping("/user/{userId}")
+	public ResponseEntity<?> unassignUserId(@PathVariable Long userId) {
+		cursoService.unassignByUserId(userId);
+		return ResponseEntity.noContent().build();
+	}
 
 	private ResponseEntity<?> validateErrors(BindingResult result) {
 		Map<String, String> errores = new HashMap<>();

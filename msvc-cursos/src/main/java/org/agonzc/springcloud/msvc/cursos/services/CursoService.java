@@ -15,6 +15,8 @@ public interface CursoService {
 
 	void delete(Long id);
 	
+	void unassignByUserId(Long userId);
+	
 	Optional<Usuario> assignUser(Long usuarioId, Long cursoId);
 	
 	Optional<Usuario> unassignUser(Long userId, Long cursoId);

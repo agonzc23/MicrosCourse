@@ -91,4 +91,10 @@ public class CursoServiceImpl implements CursoService{
 		return Optional.empty();
 	}
 
+	@Override
+	@Transactional
+	public void unassignByUserId(Long userId) {
+		cursoRepo.deleteCursoUsuario(userId);
+	}
+
 }

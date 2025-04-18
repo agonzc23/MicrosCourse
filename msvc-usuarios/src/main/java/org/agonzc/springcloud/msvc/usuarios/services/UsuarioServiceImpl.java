@@ -3,6 +3,7 @@ package org.agonzc.springcloud.msvc.usuarios.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.agonzc.springcloud.msvc.usuarios.clients.CursosClientRest;
 import org.agonzc.springcloud.msvc.usuarios.models.entities.Usuario;
 import org.agonzc.springcloud.msvc.usuarios.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class UsuarioServiceImpl implements UsuarioService{
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private CursosClientRest cursosClient;
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -37,6 +41,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 	@Transactional
 	public void delete(Long id) {
 		usuarioRepository.deleteById(id);
+		cursosClient.unassignUserId(id);
 	}
 
 	@Override
