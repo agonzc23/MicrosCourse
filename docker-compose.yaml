@@ -29,10 +29,10 @@ services:
        
   msvc-usuarios:
     container_name: msvc-usuarios
-    #image: usuarios:latest
-    build:
-      context: ./
-      dockerfile: ./msvc-usuarios/Dockerfile
+#    build:
+#      context: ./
+#      dockerfile: ./msvc-usuarios/Dockerfile
+    image: agonzc23/usuarios:latest
     ports:
       - "8081:8081"
     env_file: ./msvc-usuarios/.env
@@ -44,10 +44,10 @@ services:
        
   msvc-cursos:
     container_name: msvc-cursos
-    #image: cursos:latest
-    build:
-      context: ./
-      dockerfile: ./msvc-cursos/Dockerfile
+#    build:
+#      context: ./
+#      dockerfile: ./msvc-cursos/Dockerfile
+    image: agonzc23/cursos:latest
     ports:
       - "8082:8082"
     env_file: ./msvc-cursos/.env
